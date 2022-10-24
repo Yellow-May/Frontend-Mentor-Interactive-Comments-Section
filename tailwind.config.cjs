@@ -18,7 +18,7 @@ module.exports = {
         100: "hsl(223, 19%, 93%)" // Neutral
       },
       white: {
-        DEAFULT: "hsl(0, 0%, 100%)" // Neutral
+        DEFAULT: "hsl(0, 0%, 100%)" // Neutral
       },
     },
     fontFamily: {
