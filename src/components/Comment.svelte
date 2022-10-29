@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import Reply from './Reply.svelte';
 	import Response from './Response.svelte';
 	import Button from './UI/Button.svelte';
 	import Switch from './UI/Switch.svelte';
@@ -16,7 +17,20 @@
 			};
 			username: string;
 		};
-		replies: any[];
+		replies: {
+			id: number;
+			content: string;
+			createdAt: string;
+			score: number;
+			replyingTo: string;
+			user: {
+				image: {
+					png: string;
+					webp: string;
+				};
+				username: string;
+			};
+		}[];
 	};
 
 	$: reply = false;
@@ -36,10 +50,25 @@
 				break;
 		}
 	};
+
+	const updateReplyScore = ({
+		detail,
+	}: {
+		detail: {
+			id: number;
+			score: number;
+		};
+	}) => {
+		dispatch('update-reply-score', {
+			id: comment.id,
+			replyid: detail.id,
+			score: detail.score,
+		});
+	};
 </script>
 
-<div>
-	<div class="bg-white p-5 flex gap-4 items-start mt-5 mb-2 rounded-md">
+<div class="my-5 flex flex-col gap-3">
+	<div class="bg-white p-5 flex gap-4 items-start rounded-md">
 		<Switch score={comment.score} on:update-score={updateScore} />
 
 		<div>
@@ -64,6 +93,16 @@
 			<p class="text-sm text-blue-100 leading-[21px]">{comment.content}</p>
 		</div>
 	</div>
+
+	{#if comment.replies.length > 0}
+		<div
+			class="relative w-[90%] ml-auto before:bg-gray-100 before:w-[2.5px] before:h-full before:absolute before:-left-[5%] flex flex-col gap-3"
+		>
+			{#each comment.replies as reply}
+				<Reply {reply} on:update-reply-score={updateReplyScore} />
+			{/each}
+		</div>
+	{/if}
 
 	<Response {reply} />
 </div>

@@ -16,11 +16,33 @@
 			return comment;
 		});
 	};
+
+	const updateReplyScore = ({
+		detail,
+	}: {
+		detail: { id: number; replyid: number; score: number };
+	}) => {
+		comments = comments.map(comment => {
+			if (comment.id === detail.id) {
+				comment.replies = comment.replies.map(reply => {
+					if (reply.id === detail.replyid) {
+						reply.score = detail.score;
+					}
+					return reply;
+				});
+			}
+			return comment;
+		});
+	};
 </script>
 
 <main class="font-rubik h-full w-full max-w-2xl mx-auto p-3">
 	{#each comments as comment}
-		<Comment {comment} on:update-score={updateScore} />
+		<Comment
+			{comment}
+			on:update-score={updateScore}
+			on:update-reply-score={updateReplyScore}
+		/>
 	{/each}
 </main>
 
