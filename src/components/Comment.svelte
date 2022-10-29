@@ -19,6 +19,8 @@
 		replies: any[];
 	};
 
+	$: reply = false;
+
 	const dispatch = createEventDispatcher();
 	const updateScore = ({ detail }: { detail: 'increment' | 'decrement' }) => {
 		switch (detail) {
@@ -37,16 +39,20 @@
 </script>
 
 <div>
-	<div class="bg-white p-5 flex gap-3 items-start my-5">
+	<div class="bg-white p-5 flex gap-3 items-start mt-5 mb-2">
 		<Switch score={comment.score} on:update-score={updateScore} />
 		<div>
 			<div class="flex justify-between items-center mb-2">
 				<div />
-				<Button variant="icon" icon="reply" />
+				<Button
+					variant="icon"
+					icon="reply"
+					on:on-click={() => (reply = !reply)}
+				/>
 			</div>
 			<p class="text-sm text-blue-100">{comment.content}</p>
 		</div>
 	</div>
 
-	<!-- <Response /> -->
+	<Response {reply} />
 </div>
