@@ -8,6 +8,7 @@
 	$: isOpen = false;
 
 	export let reply: ReplyType;
+	export let user: UserType;
 
 	const dispatch = createEventDispatcher();
 	const updateScore = ({ detail }: { detail: 'increment' | 'decrement' }) => {
@@ -57,14 +58,31 @@
 					/>
 					<h5 class="font-bold">
 						{reply.user.username}
+
+						{#if reply.user.username === user.username}
+							&nbsp;
+							<span class="bg-blue-200 p-1 text-white text-xs">you</span>
+						{/if}
 					</h5>
 					<span>{reply.createdAt}</span>
 				</div>
-				<Button
-					variant="icon"
-					icon="reply"
-					on:on-click={() => (isOpen = !isOpen)}
-				/>
+
+				{#if reply.user.username === user.username}
+					<div class="flex items-center gap-5">
+						<Button
+							variant="icon"
+							icon="delete"
+							on:on-click={() => dispatch('delete-reply', reply.id)}
+						/>
+						<Button variant="icon" icon="edit" />
+					</div>
+				{:else}
+					<Button
+						variant="icon"
+						icon="reply"
+						on:on-click={() => (isOpen = !isOpen)}
+					/>
+				{/if}
 			</div>
 			<p class="text-sm text-blue-100 leading-[21px]">
 				<span class="text-blue-200 font-medium">@{reply.replyingTo}</span>&nbsp;

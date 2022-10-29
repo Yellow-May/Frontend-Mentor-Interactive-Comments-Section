@@ -7,6 +7,7 @@
 	import Switch from './UI/Switch.svelte';
 
 	export let comment: CommentType;
+	export let user: UserType;
 
 	$: reply = false;
 
@@ -58,6 +59,14 @@
 			} as ReplyType,
 		});
 	};
+
+	const deleteComment = () => {
+		dispatch('delete-comment', comment.id);
+	};
+
+	const deleteReply = ({ detail }: { detail: number }) => {
+		dispatch('delete-reply', { id: comment.id, replyid: detail });
+	};
 </script>
 
 <div class="my-5 flex flex-col gap-3">
@@ -74,14 +83,28 @@
 					/>
 					<h5 class="font-bold">
 						{comment.user.username}
+
+						{#if comment.user.username === user.username}
+							&nbsp;
+							<span class="bg-blue-200 p-1 text-white text-xs">you</span>
+						{/if}
 					</h5>
+
 					<span>{comment.createdAt}</span>
 				</div>
-				<Button
-					variant="icon"
-					icon="reply"
-					on:on-click={() => (reply = !reply)}
-				/>
+
+				{#if comment.user.username === user.username}
+					<div class="flex items-center gap-5">
+						<Button variant="icon" icon="delete" on:on-click={deleteComment} />
+						<Button variant="icon" icon="edit" />
+					</div>
+				{:else}
+					<Button
+						variant="icon"
+						icon="reply"
+						on:on-click={() => (reply = !reply)}
+					/>
+				{/if}
 			</div>
 			<p class="text-sm text-blue-100 leading-[21px]">{comment.content}</p>
 		</div>
@@ -94,8 +117,10 @@
 			{#each comment.replies as reply}
 				<Reply
 					{reply}
+					{user}
 					on:update-reply-score={updateReplyScore}
 					on:add-reply={addReply}
+					on:delete-reply={deleteReply}
 				/>
 			{/each}
 		</div>

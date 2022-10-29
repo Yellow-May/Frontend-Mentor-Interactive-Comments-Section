@@ -53,15 +53,37 @@
 			return comment;
 		});
 	};
+
+	const deleteComment = ({ detail }: { detail: number }) => {
+		comments = comments.filter(comment => comment.id !== detail);
+	};
+
+	const deleteReply = ({
+		detail,
+	}: {
+		detail: { id: number; replyid: number };
+	}) => {
+		comments = comments.map(comment => {
+			if (comment.id === detail.id) {
+				comment.replies = comment.replies.filter(
+					reply => reply.id !== detail.replyid
+				);
+			}
+			return comment;
+		});
+	};
 </script>
 
 <main class="font-rubik h-full w-full max-w-2xl mx-auto p-3">
 	{#each comments as comment}
 		<Comment
 			{comment}
+			user={data.currentUser}
 			on:update-score={updateScore}
 			on:update-reply-score={updateReplyScore}
 			on:add-reply={addReply}
+			on:delete-comment={deleteComment}
+			on:delete-reply={deleteReply}
 		/>
 	{/each}
 
