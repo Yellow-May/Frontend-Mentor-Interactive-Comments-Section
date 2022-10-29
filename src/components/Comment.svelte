@@ -39,18 +39,29 @@
 </script>
 
 <div>
-	<div class="bg-white p-5 flex gap-3 items-start mt-5 mb-2">
+	<div class="bg-white p-5 flex gap-4 items-start mt-5 mb-2 rounded-md">
 		<Switch score={comment.score} on:update-score={updateScore} />
+
 		<div>
-			<div class="flex justify-between items-center mb-2">
-				<div />
+			<div class="flex justify-between items-center mb-3">
+				<div class="flex items-center gap-3 text-sm text-blue-100 ">
+					<img
+						src={comment.user.image.png}
+						alt={comment.user.username}
+						class="w-7"
+					/>
+					<h5 class="font-bold">
+						{comment.user.username}
+					</h5>
+					<span>{comment.createdAt}</span>
+				</div>
 				<Button
 					variant="icon"
 					icon="reply"
 					on:on-click={() => (reply = !reply)}
 				/>
 			</div>
-			<p class="text-sm text-blue-100">{comment.content}</p>
+			<p class="text-sm text-blue-100 leading-[21px]">{comment.content}</p>
 		</div>
 	</div>
 
