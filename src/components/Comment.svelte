@@ -104,5 +104,5 @@
 		</div>
 	{/if}
 
-	<Response {reply} />
+	<Response {reply} replyingTo={`@${comment.user.username}`} />
 </div>

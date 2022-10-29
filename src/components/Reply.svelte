@@ -74,5 +74,5 @@
 		</div>
 	</div>
 
-	<Response reply={isOpen} />
+	<Response reply={isOpen} replyingTo={`@${reply.user.username}`} />
 </div>

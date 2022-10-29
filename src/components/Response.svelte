@@ -12,7 +12,8 @@
 	};
 
 	export let type: 'New' | 'Reply' = 'Reply';
-	export let reply: boolean;
+	export let reply: boolean = true;
+	export let replyingTo: string = '';
 </script>
 
 <form
@@ -22,6 +23,11 @@
 	}`}
 >
 	<img src={user.image.png} alt={user.username} class="w-10" />
-	<Input name="new-comment" class="flex-grow" on:comment-input={handleInput} />
+	<Input
+		name="new-comment"
+		class="flex-grow"
+		on:comment-input={handleInput}
+		{replyingTo}
+	/>
 	<Button type="submit">{type === 'Reply' ? type : 'Send'}</Button>
 </form>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Comment from './components/Comment.svelte';
+	import Response from './components/Response.svelte';
 	import data from './data/data.json';
 
 	$: comments = data.comments;
@@ -44,6 +45,8 @@
 			on:update-reply-score={updateReplyScore}
 		/>
 	{/each}
+
+	<Response type="New" />
 </main>
 
 <style>
