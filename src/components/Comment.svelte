@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CommentType } from 'src/data/types';
+	import type { CommentType, ReplyType, UserType } from 'src/data/types';
 	import { createEventDispatcher } from 'svelte';
 	import Reply from './Reply.svelte';
 	import Response from './Response.svelte';
@@ -40,13 +40,31 @@
 			score: detail.score,
 		});
 	};
+
+	const addReply = ({
+		detail,
+	}: {
+		detail: { content: string; user: UserType; replyingTo?: string };
+	}) => {
+		dispatch('add-reply', {
+			id: comment.id,
+			reply: {
+				id: Math.random() * 100,
+				createdAt: '1 minute ago',
+				replyingTo: comment.user.username,
+				score: 0,
+				replies: [],
+				...detail,
+			} as ReplyType,
+		});
+	};
 </script>
 
 <div class="my-5 flex flex-col gap-3">
-	<div class="bg-white p-5 flex gap-4 items-start rounded-md">
+	<div class="bg-white p-5 flex gap-4 items-start rounded-md min-h-[130px]">
 		<Switch score={comment.score} on:update-score={updateScore} />
 
-		<div>
+		<div class="flex-grow">
 			<div class="flex justify-between items-center mb-3">
 				<div class="flex items-center gap-3 text-sm text-blue-100 ">
 					<img
@@ -74,10 +92,18 @@
 			class="relative w-[90%] ml-auto before:bg-gray-100 before:w-[2.5px] before:h-full before:absolute before:-left-[5%] flex flex-col gap-3"
 		>
 			{#each comment.replies as reply}
-				<Reply {reply} on:update-reply-score={updateReplyScore} />
+				<Reply
+					{reply}
+					on:update-reply-score={updateReplyScore}
+					on:add-reply={addReply}
+				/>
 			{/each}
 		</div>
 	{/if}
 
-	<Response {reply} replyingTo={`@${comment.user.username}`} />
+	<Response
+		{reply}
+		replyingTo={`@${comment.user.username}`}
+		on:add-reply={addReply}
+	/>
 </div>

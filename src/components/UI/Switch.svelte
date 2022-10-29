@@ -20,7 +20,7 @@
 </script>
 
 <div
-	class="w-[4.25rem] h-[4.25rem] rounded-md flex flex-col items-center justify-center bg-gray-50"
+	class="min-w-[2rem] h-[4.25rem] rounded-md flex flex-col items-center justify-center bg-gray-50"
 >
 	<Button
 		icon="plus"

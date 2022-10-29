@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ReplyType } from 'src/data/types';
+	import type { ReplyType, UserType } from 'src/data/types';
 	import { createEventDispatcher } from 'svelte';
 	import Response from './Response.svelte';
 	import Button from './UI/Button.svelte';
@@ -30,13 +30,24 @@
 				break;
 		}
 	};
+
+	const addReply = ({
+		detail,
+	}: {
+		detail: { content: string; user: UserType };
+	}) => {
+		dispatch('add-reply', {
+			replyingTo: reply.user.username,
+			...detail,
+		});
+	};
 </script>
 
 <div class="flex flex-col gap-1">
-	<div class="bg-white p-5 flex gap-4 items-start rounded-md">
+	<div class="bg-white p-5 flex gap-4 items-start rounded-md min-h-[130px]">
 		<Switch score={reply.score} on:update-score={updateScore} />
 
-		<div>
+		<div class="flex-grow">
 			<div class="flex justify-between items-center mb-3">
 				<div class="flex items-center gap-3 text-sm text-blue-100 ">
 					<img
@@ -62,5 +73,9 @@
 		</div>
 	</div>
 
-	<Response reply={isOpen} replyingTo={`@${reply.user.username}`} />
+	<Response
+		reply={isOpen}
+		replyingTo={`@${reply.user.username}`}
+		on:add-reply={addReply}
+	/>
 </div>

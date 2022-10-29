@@ -61,11 +61,9 @@
 			{comment}
 			on:update-score={updateScore}
 			on:update-reply-score={updateReplyScore}
+			on:add-reply={addReply}
 		/>
 	{/each}
 
-	<Response type="New" />
+	<Response type="New" on:add-comment={addComment} />
 </main>
-
-<style>
-</style>
