@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { ReplyType } from 'src/data/types';
 	import { createEventDispatcher } from 'svelte';
 	import Response from './Response.svelte';
 	import Button from './UI/Button.svelte';
@@ -6,20 +7,7 @@
 
 	$: isOpen = false;
 
-	export let reply: {
-		id: number;
-		content: string;
-		createdAt: string;
-		score: number;
-		replyingTo: string;
-		user: {
-			image: {
-				png: string;
-				webp: string;
-			};
-			username: string;
-		};
-	};
+	export let reply: ReplyType;
 
 	const dispatch = createEventDispatcher();
 	const updateScore = ({ detail }: { detail: 'increment' | 'decrement' }) => {

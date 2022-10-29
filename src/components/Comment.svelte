@@ -1,37 +1,12 @@
 <script lang="ts">
+	import type { CommentType } from 'src/data/types';
 	import { createEventDispatcher } from 'svelte';
 	import Reply from './Reply.svelte';
 	import Response from './Response.svelte';
 	import Button from './UI/Button.svelte';
 	import Switch from './UI/Switch.svelte';
 
-	export let comment: {
-		id: number;
-		content: string;
-		createdAt: string;
-		score: number;
-		user: {
-			image: {
-				png: string;
-				webp: string;
-			};
-			username: string;
-		};
-		replies: {
-			id: number;
-			content: string;
-			createdAt: string;
-			score: number;
-			replyingTo: string;
-			user: {
-				image: {
-					png: string;
-					webp: string;
-				};
-				username: string;
-			};
-		}[];
-	};
+	export let comment: CommentType;
 
 	$: reply = false;
 

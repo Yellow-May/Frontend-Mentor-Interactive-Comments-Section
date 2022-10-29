@@ -2,6 +2,7 @@
 	import Comment from './components/Comment.svelte';
 	import Response from './components/Response.svelte';
 	import data from './data/data.json';
+	import type { CommentType, ReplyType } from './data/types';
 
 	$: comments = data.comments;
 
@@ -31,6 +32,23 @@
 					}
 					return reply;
 				});
+			}
+			return comment;
+		});
+	};
+
+	const addComment = ({ detail }: { detail: CommentType }) => {
+		comments = [...comments, detail];
+	};
+
+	const addReply = ({
+		detail,
+	}: {
+		detail: { id: number; reply: ReplyType };
+	}) => {
+		comments = comments.map(comment => {
+			if (comment.id === detail.id) {
+				comment.replies = [...comment.replies, detail.reply];
 			}
 			return comment;
 		});
