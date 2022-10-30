@@ -6,7 +6,7 @@
 	import plusIcon from '../../assets/icon-plus.svg';
 	import minusIcon from '../../assets/icon-minus.svg';
 
-	export let icon: 'reply' | 'delete' | 'edit' | 'plus' | 'minus' = 'reply';
+	export let icon: 'reply' | 'delete' | 'edit' | 'plus' | 'minus' = undefined;
 	export let extraStyles: string = '';
 	export let disabled: boolean = false;
 
@@ -20,12 +20,12 @@
 	]);
 	let style = 'hover:opacity-50 ';
 
-	if (type === 'submit') {
-		style += 'text-white text-base bg-blue-200 rounded py-2 px-5 uppercase';
-	} else {
+	if (icon) {
 		style += `text-sm font-bold flex items-center gap-2 capitalize ${
 			icon === 'delete' ? 'text-red-100' : 'text-blue-200'
 		}`;
+	} else {
+		style += 'text-white text-base bg-blue-200 rounded py-2 px-5 uppercase';
 	}
 
 	if (disabled) {
@@ -37,7 +37,7 @@
 </script>
 
 <button {type} class={style} on:click={e => dispatch('on-click', e)} {disabled}>
-	{#if type === 'button'}
+	{#if icons.get(icon)}
 		<img src={icons.get(icon)} alt="reply" class="max-w-full" />
 		{#if icon !== 'plus' && icon !== 'minus'}
 			{icon}

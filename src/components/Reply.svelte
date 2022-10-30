@@ -3,9 +3,12 @@
 	import { createEventDispatcher } from 'svelte';
 	import Response from './Response.svelte';
 	import Button from './UI/Button.svelte';
+	import Input from './UI/Input.svelte';
 	import Switch from './UI/Switch.svelte';
 
 	$: isOpen = false;
+	$: edit = false;
+	$: editedReply = reply.content;
 
 	export let reply: ReplyType;
 	export let user: UserType;
@@ -42,6 +45,14 @@
 			...detail,
 		});
 	};
+
+	const updateReply = () => {
+		if (editedReply.startsWith('@')) {
+			editedReply = editedReply.slice(1 + reply.replyingTo.length).trim();
+		}
+		dispatch('update-reply', { replyid: reply.id, content: editedReply });
+		edit = false;
+	};
 </script>
 
 <div class="flex flex-col gap-1">
@@ -74,7 +85,11 @@
 							icon="delete"
 							on:on-click={() => dispatch('delete-reply', reply.id)}
 						/>
-						<Button variant="icon" icon="edit" />
+						<Button
+							variant="icon"
+							icon="edit"
+							on:on-click={() => (edit = true)}
+						/>
 					</div>
 				{:else}
 					<Button
@@ -84,10 +99,23 @@
 					/>
 				{/if}
 			</div>
-			<p class="text-sm text-blue-100 leading-[21px]">
-				<span class="text-blue-200 font-medium">@{reply.replyingTo}</span>&nbsp;
-				{reply.content}
-			</p>
+
+			{#if edit}
+				<div class="flex flex-col items-end gap-2">
+					<Input
+						name="edit-reply"
+						defaultValue={`@${reply.replyingTo} ${reply.content}`}
+						on:comment-input={({ detail }) => (editedReply = detail)}
+					/>
+					<Button on:on-click={updateReply}>Update</Button>
+				</div>
+			{:else}
+				<p class="text-sm text-blue-100 leading-[21px]">
+					<span class="text-blue-200 font-medium">@{reply.replyingTo}</span
+					>&nbsp;
+					{reply.content}
+				</p>
+			{/if}
 		</div>
 	</div>
 

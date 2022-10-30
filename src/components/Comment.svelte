@@ -4,12 +4,15 @@
 	import Reply from './Reply.svelte';
 	import Response from './Response.svelte';
 	import Button from './UI/Button.svelte';
+	import Input from './UI/Input.svelte';
 	import Switch from './UI/Switch.svelte';
 
 	export let comment: CommentType;
 	export let user: UserType;
 
 	$: reply = false;
+	$: edit = false;
+	$: editedComment = '';
 
 	const dispatch = createEventDispatcher();
 	const updateScore = ({ detail }: { detail: 'increment' | 'decrement' }) => {
@@ -67,6 +70,19 @@
 	const deleteReply = ({ detail }: { detail: number }) => {
 		dispatch('delete-reply', { id: comment.id, replyid: detail });
 	};
+
+	const updateComment = () => {
+		dispatch('update-comment', { id: comment.id, content: editedComment });
+		edit = false;
+	};
+
+	const updateReply = ({
+		detail,
+	}: {
+		detail: { replyid: number; content: string };
+	}) => {
+		dispatch('update-reply', { id: comment.id, ...detail });
+	};
 </script>
 
 <div class="my-5 flex flex-col gap-3">
@@ -96,7 +112,11 @@
 				{#if comment.user.username === user.username}
 					<div class="flex items-center gap-5">
 						<Button variant="icon" icon="delete" on:on-click={deleteComment} />
-						<Button variant="icon" icon="edit" />
+						<Button
+							variant="icon"
+							icon="edit"
+							on:on-click={() => (edit = true)}
+						/>
 					</div>
 				{:else}
 					<Button
@@ -106,7 +126,19 @@
 					/>
 				{/if}
 			</div>
-			<p class="text-sm text-blue-100 leading-[21px]">{comment.content}</p>
+
+			{#if edit}
+				<div class="flex flex-col items-end gap-2">
+					<Input
+						name="edit-comment"
+						defaultValue={`${comment.content}`}
+						on:comment-input={({ detail }) => (editedComment = detail)}
+					/>
+					<Button on:on-click={updateComment}>Update</Button>
+				</div>
+			{:else}
+				<p class="text-sm text-blue-100 leading-[21px]">{comment.content}</p>
+			{/if}
 		</div>
 	</div>
 
@@ -121,6 +153,7 @@
 					on:update-reply-score={updateReplyScore}
 					on:add-reply={addReply}
 					on:delete-reply={deleteReply}
+					on:update-reply={updateReply}
 				/>
 			{/each}
 		</div>

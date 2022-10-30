@@ -55,7 +55,7 @@
 		name="new-comment"
 		class="flex-grow"
 		on:comment-input={handleInput}
-		{replyingTo}
+		defaultValue={replyingTo}
 	/>
 	<Button type="submit">{type === 'Reply' ? type : 'Send'}</Button>
 </form>

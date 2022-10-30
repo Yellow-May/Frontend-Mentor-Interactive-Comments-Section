@@ -72,6 +72,37 @@
 			return comment;
 		});
 	};
+
+	const updateComment = ({
+		detail,
+	}: {
+		detail: { id: number; content: string };
+	}) => {
+		comments = comments.map(comment => {
+			if (comment.id === detail.id) {
+				comment.content = detail.content;
+			}
+			return comment;
+		});
+	};
+
+	const updateReply = ({
+		detail,
+	}: {
+		detail: { id: number; replyid: number; content: string };
+	}) => {
+		comments = comments.map(comment => {
+			if (comment.id === detail.id) {
+				comment.replies = comment.replies.map(reply => {
+					if (reply.id === detail.replyid) {
+						reply.content = detail.content;
+					}
+					return reply;
+				});
+			}
+			return comment;
+		});
+	};
 </script>
 
 <main class="font-rubik h-full w-full max-w-2xl mx-auto p-3">
@@ -84,6 +115,8 @@
 			on:add-reply={addReply}
 			on:delete-comment={deleteComment}
 			on:delete-reply={deleteReply}
+			on:update-comment={updateComment}
+			on:update-reply={updateReply}
 		/>
 	{/each}
 
