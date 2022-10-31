@@ -45,7 +45,13 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<button {type} class={style} on:click={e => dispatch('on-click', e)} {disabled}>
+<button
+	{type}
+	class={style}
+	title={icon || 'btn'}
+	on:click={e => dispatch('on-click', e)}
+	{disabled}
+>
 	{#if icons.get(icon)}
 		<img src={icons.get(icon)} alt="reply" class="max-w-full" />
 		{#if icon !== 'plus' && icon !== 'minus'}
