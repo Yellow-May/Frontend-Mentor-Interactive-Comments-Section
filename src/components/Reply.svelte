@@ -3,12 +3,14 @@
 	import { createEventDispatcher } from 'svelte';
 	import Response from './Response.svelte';
 	import Button from './UI/Button.svelte';
+	import Confirm from './UI/Confirm.svelte';
 	import Input from './UI/Input.svelte';
-	import Switch from './UI/Switch.svelte';
+	import Vote from './UI/Vote.svelte';
 
 	$: isOpen = false;
 	$: edit = false;
 	$: editedReply = reply.content;
+	$: confirmDelete = false;
 
 	export let reply: ReplyType;
 	export let user: UserType;
@@ -53,13 +55,21 @@
 		dispatch('update-reply', { replyid: reply.id, content: editedReply });
 		edit = false;
 	};
+
+	const confrimProps = {
+		onCancel: () => (confirmDelete = false),
+		onOk: () => {
+			confirmDelete = true;
+			dispatch('delete-reply', reply.id);
+		},
+	};
 </script>
 
 <div class="flex flex-col gap-1">
 	<div
 		class="bg-white p-4 md:p-5 flex flex-col-reverse md:flex-row gap-4 items-start rounded-md min-h-[130px] relative"
 	>
-		<Switch score={reply.score} on:update-score={updateScore} />
+		<Vote score={reply.score} on:update-score={updateScore} />
 
 		<div class="flex-grow w-full">
 			<div class="flex justify-between items-center mb-3">
@@ -88,22 +98,10 @@
 					class="absolute bottom-6 right-5 md:static flex items-center gap-5"
 				>
 					{#if reply.user.username === user.username}
-						<Button
-							variant="icon"
-							icon="delete"
-							on:on-click={() => dispatch('delete-reply', reply.id)}
-						/>
-						<Button
-							variant="icon"
-							icon="edit"
-							on:on-click={() => (edit = true)}
-						/>
+						<Button icon="delete" on:on-click={() => (confirmDelete = true)} />
+						<Button icon="edit" on:on-click={() => (edit = true)} />
 					{:else}
-						<Button
-							variant="icon"
-							icon="reply"
-							on:on-click={() => (isOpen = !isOpen)}
-						/>
+						<Button icon="reply" on:on-click={() => (isOpen = !isOpen)} />
 					{/if}
 				</div>
 			</div>
@@ -126,6 +124,10 @@
 			{/if}
 		</div>
 	</div>
+
+	{#if confirmDelete}
+		<Confirm {...confrimProps} />
+	{/if}
 
 	<Response
 		reply={isOpen}

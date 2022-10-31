@@ -9,6 +9,7 @@
 	export let icon: 'reply' | 'delete' | 'edit' | 'plus' | 'minus' = undefined;
 	export let extraStyles: string = '';
 	export let disabled: boolean = false;
+	export let variant: 'primary' | 'secondary' | 'danger' = 'primary';
 
 	let type = $$props.type ?? 'button';
 	let icons = new Map([
@@ -25,8 +26,15 @@
 			icon === 'delete' ? 'text-red-100' : 'text-blue-200'
 		}`;
 	} else {
+		if (variant === 'secondary') {
+			style += 'bg-blue-300 ';
+		} else if (variant === 'danger') {
+			style += 'bg-red-100 ';
+		} else if (variant === 'primary') {
+			style += 'bg-blue-200 ';
+		}
 		style +=
-			'text-sm text-white md:text-base bg-blue-200 rounded py-1 px-3 md:py-2 md:px-5 uppercase';
+			'text-sm text-white md:text-base rounded py-2 px-3 md:px-5 uppercase';
 	}
 
 	if (disabled) {
