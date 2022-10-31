@@ -86,7 +86,9 @@
 </script>
 
 <div class="my-5 flex flex-col gap-3">
-	<div class="bg-white p-5 flex gap-4 items-start rounded-md min-h-[130px]">
+	<div
+		class="bg-white p-4 md:p-5 flex flex-col-reverse md:flex-row gap-4 items-start rounded-md min-h-[130px] relative"
+	>
 		<Switch score={comment.score} on:update-score={updateScore} />
 
 		<div class="flex-grow">
@@ -95,9 +97,10 @@
 					<img
 						src={comment.user.image.png}
 						alt={comment.user.username}
-						class="w-7"
+						class="w-6 md:w-7"
 					/>
-					<h5 class="font-bold">
+
+					<h5 class="font-bold text-sm md:text-base">
 						{comment.user.username}
 
 						{#if comment.user.username === user.username}
@@ -106,25 +109,27 @@
 						{/if}
 					</h5>
 
-					<span>{comment.createdAt}</span>
+					<span class="text-xs md:text-sm">{comment.createdAt}</span>
 				</div>
 
-				{#if comment.user.username === user.username}
-					<div class="flex items-center gap-5">
+				<div
+					class="absolute bottom-6 right-5 md:static flex items-center gap-5"
+				>
+					{#if comment.user.username === user.username}
 						<Button variant="icon" icon="delete" on:on-click={deleteComment} />
 						<Button
 							variant="icon"
 							icon="edit"
 							on:on-click={() => (edit = true)}
 						/>
-					</div>
-				{:else}
-					<Button
-						variant="icon"
-						icon="reply"
-						on:on-click={() => (reply = !reply)}
-					/>
-				{/if}
+					{:else}
+						<Button
+							variant="icon"
+							icon="reply"
+							on:on-click={() => (reply = !reply)}
+						/>
+					{/if}
+				</div>
 			</div>
 
 			{#if edit}
@@ -137,14 +142,16 @@
 					<Button on:on-click={updateComment}>Update</Button>
 				</div>
 			{:else}
-				<p class="text-sm text-blue-100 leading-[21px]">{comment.content}</p>
+				<p class="text-xs md:text-sm text-blue-100 leading-[21px]">
+					{comment.content}
+				</p>
 			{/if}
 		</div>
 	</div>
 
 	{#if comment.replies.length > 0}
 		<div
-			class="relative w-[90%] ml-auto before:bg-gray-100 before:w-[2.5px] before:h-full before:absolute before:-left-[5%] flex flex-col gap-3"
+			class="relative w-[90%] ml-auto before:bg-gray-100 before:w-[2.5px] before:h-full before:absolute before:-left-[6.5%] md:before:-left-[5%] flex flex-col gap-3"
 		>
 			{#each comment.replies as reply}
 				<Reply

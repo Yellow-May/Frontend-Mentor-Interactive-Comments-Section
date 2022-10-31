@@ -21,11 +21,12 @@
 	let style = 'hover:opacity-50 ';
 
 	if (icon) {
-		style += `text-sm font-bold flex items-center gap-2 capitalize ${
+		style += `text-xs md:text-sm font-bold flex items-center gap-1 md:gap-2 capitalize ${
 			icon === 'delete' ? 'text-red-100' : 'text-blue-200'
 		}`;
 	} else {
-		style += 'text-white text-base bg-blue-200 rounded py-2 px-5 uppercase';
+		style +=
+			'text-sm text-white md:text-base bg-blue-200 rounded py-1 px-3 md:py-2 md:px-5 uppercase';
 	}
 
 	if (disabled) {

@@ -20,7 +20,7 @@
 </script>
 
 <div
-	class="min-w-[2rem] h-[4.25rem] rounded-md flex flex-col items-center justify-center bg-gray-50"
+	class="w-[4.5rem] h-[1.75rem] rounded flex items-center justify-center bg-gray-50 md:min-w-[2rem] md:h-[4.25rem] md:flex-col md:rounded-md"
 >
 	<Button
 		icon="plus"
@@ -28,12 +28,13 @@
 		on:on-click={increment}
 		disabled={picked === 'up'}
 	/>
-	<span class="text-xs flex-grow flex items-center text-blue-200 font-medium"
+	<span
+		class="text-xs flex-grow flex justify-center items-center text-blue-200 font-medium"
 		>{score}
 	</span>
 	<Button
 		icon="minus"
-		extraStyles="ml-[2px] p-2"
+		extraStyles="md:ml-[2px] p-2"
 		on:on-click={decrement}
 		disabled={picked === 'down'}
 	/>

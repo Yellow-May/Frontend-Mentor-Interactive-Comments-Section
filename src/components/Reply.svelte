@@ -56,30 +56,38 @@
 </script>
 
 <div class="flex flex-col gap-1">
-	<div class="bg-white p-5 flex gap-4 items-start rounded-md min-h-[130px]">
+	<div
+		class="bg-white p-4 md:p-5 flex flex-col-reverse md:flex-row gap-4 items-start rounded-md min-h-[130px] relative"
+	>
 		<Switch score={reply.score} on:update-score={updateScore} />
 
-		<div class="flex-grow">
+		<div class="flex-grow w-full">
 			<div class="flex justify-between items-center mb-3">
 				<div class="flex items-center gap-3 text-sm text-blue-100 ">
 					<img
 						src={reply.user.image.png}
 						alt={reply.user.username}
-						class="w-7"
+						class="w-6 md:w-7"
 					/>
-					<h5 class="font-bold">
+
+					<h5 class="font-bold text-sm md:text-base">
 						{reply.user.username}
 
 						{#if reply.user.username === user.username}
 							&nbsp;
-							<span class="bg-blue-200 p-1 text-white text-xs">you</span>
+							<span class="bg-blue-200 p-1 text-white text-[0.65rem] md:text-xs"
+								>you</span
+							>
 						{/if}
 					</h5>
-					<span>{reply.createdAt}</span>
+
+					<span class="text-xs md:text-sm">{reply.createdAt}</span>
 				</div>
 
-				{#if reply.user.username === user.username}
-					<div class="flex items-center gap-5">
+				<div
+					class="absolute bottom-6 right-5 md:static flex items-center gap-5"
+				>
+					{#if reply.user.username === user.username}
 						<Button
 							variant="icon"
 							icon="delete"
@@ -90,14 +98,14 @@
 							icon="edit"
 							on:on-click={() => (edit = true)}
 						/>
-					</div>
-				{:else}
-					<Button
-						variant="icon"
-						icon="reply"
-						on:on-click={() => (isOpen = !isOpen)}
-					/>
-				{/if}
+					{:else}
+						<Button
+							variant="icon"
+							icon="reply"
+							on:on-click={() => (isOpen = !isOpen)}
+						/>
+					{/if}
+				</div>
 			</div>
 
 			{#if edit}
@@ -110,7 +118,7 @@
 					<Button on:on-click={updateReply}>Update</Button>
 				</div>
 			{:else}
-				<p class="text-sm text-blue-100 leading-[21px]">
+				<p class="text-xs md:text-sm text-blue-100 leading-[21px]">
 					<span class="text-blue-200 font-medium">@{reply.replyingTo}</span
 					>&nbsp;
 					{reply.content}

@@ -46,11 +46,11 @@
 <form
 	on:submit|preventDefault={handleSubmit}
 	id="responseForm"
-	class={`bg-white rounded-md p-5 flex items-start gap-3 ${
+	class={`bg-white rounded-md p-4 md:p-5 flex items-start gap-2 md:gap-3 ${
 		reply ? '' : 'hidden'
 	}`}
 >
-	<img src={user.image.png} alt={user.username} class="w-10" />
+	<img src={user.image.png} alt={user.username} class="w-7 md:w-9" />
 	<Input
 		name="new-comment"
 		class="flex-grow"
